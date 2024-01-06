@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  mearn-stack-app-fe:
+    container_name: mearn-stack-app-fe-01
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+    restart: always
+    environment:
+      - REACT_APP_BASE_URL=http://localhost:3002/api
+      - REACT_APP_ASSETS_URL=http://localhost:3002/uploads

@@ -1,0 +1,38 @@
+version: "3.9"
+
+volumes:
+  mongo_db: {}
+
+services:
+  mongodb:
+    container_name: mearn-stack-app-db-01
+    image: "mongo:latest"
+    ports:
+      - 2717:27017
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: mearn-stack-app-01
+      MONGO_INITDB_ROOT_USERNAME: viet
+      MONGO_INITDB_ROOT_PASSWORD: 123123
+    
+  mern-stack-app-api:
+    container_name: mearn-stack-app-be-01
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 3002:3002
+    volumes:
+      - .:/usr/src/app
+    restart: always
+    environment:
+      PORT: 3002
+      MONGODB_URI: mongodb://mongodb:27017
+      DB_NAME: mearn-stack-app-01
+      DB_USER: viet
+      DB_PASS: 123123
+      JWT_SECRET: "This is a secret key of JWT"
+    depends_on:
+      - mongodb
